@@ -1,0 +1,111 @@
+
+//
+//Define a class Prisoner that includes:
+//- Name
+//- ID
+//- Time remaining in prison
+//
+//Define a class Prison that includes:
+//- Name
+//- Array of prisoners
+//
+//   Define the following functions:
+//- Given a Prison output the name of the prison and then all the information about
+//the prisoners in it.
+//- Create a function and sort the prisoners in ascending order by the time they have left to serve.
+
+
+#include <iostream>
+#include <cstring>
+using namespace std;
+class Prisoner {
+
+private: // пропартита на об екта
+    char* name;
+    int id;
+    int remaining_time;
+
+    void copy(const Prisoner &other) // константна ред. към обекти = конст. реф към всичко // приема само един обект
+    {
+        name = new char[strlen(other.name)+1];
+        strcpy(name,other.name);
+        this->id = other.id;
+        this->remaining_time = other.remaining_time;
+
+    }
+
+    void del()
+    {
+        delete[] name;
+    }
+public:
+
+    Prisoner(){
+        name[0] = 'f';
+        id = 0;
+        remaining_time = 0;
+    }
+
+    Prisoner(const char* _name, const int& _id, const int& _remaining_time)
+    {
+        if(!_name) { //zashtita sreshtu nullptr
+
+            _name ="";
+        }
+
+        name = new char[strlen(_name)+1];
+        strcpy(name,_name);
+        this->id = _id;
+        this->remaining_time = _remaining_time;
+
+
+
+
+    }
+
+    Prisoner(const Prisoner &other) // заделяме само памет за char и обекти
+    {
+
+        copy(other);
+    }
+
+
+
+
+    Prisoner& operator=(const Prisoner &other){  //TUK GOVORIM SAMO ZA ADRESI
+
+         if( this != &other){
+             del();
+             copy(other);
+         }
+
+        return  *this;
+    }
+
+    ~Prisoner(){
+
+        del();
+    } //   iztrivane na dinamichno zadelena pamet
+
+    int get_remaining_time() const {
+        return this->remaining_time;
+    }
+
+//    char* get_name() const {
+//
+//        return this->name;
+//    }
+
+    void print() const {
+
+        cout<<this->id;
+        cout<<this->name;
+        cout<<this->remaining_time;
+    }
+};
+int main() {
+
+    Prisoner p1;
+    p1.get_remaining_time();
+    return 0;
+}
