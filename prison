@@ -1,10 +1,7 @@
-
-//
 //Define a class Prisoner that includes:
 //- Name
 //- ID
 //- Time remaining in prison
-//
 //Define a class Prison that includes:
 //- Name
 //- Array of prisoners
@@ -14,14 +11,14 @@
 //the prisoners in it.
 //- Create a function and sort the prisoners in ascending order by the time they have left to serve.
 
-
 #include <iostream>
 #include <cstring>
 using namespace std;
+
 class Prisoner {
 
 private: // пропартита на об екта
-    char* name;
+    char *name;
     int id;
     int remaining_time;
 
@@ -41,7 +38,7 @@ private: // пропартита на об екта
 public:
 
     Prisoner(){
-        name[0] = 'f';
+        name = "";
         id = 0;
         remaining_time = 0;
     }
@@ -70,22 +67,21 @@ public:
     }
 
 
-
-
-    Prisoner& operator=(const Prisoner &other){  //TUK GOVORIM SAMO ZA ADRESI
-
-         if( this != &other){
-             del();
-             copy(other);
-         }
-
-        return  *this;
-    }
-
     ~Prisoner(){
 
         del();
     } //   iztrivane na dinamichno zadelena pamet
+
+    Prisoner& operator=(const Prisoner &other){  //TUK GOVORIM SAMO ZA ADRESI
+
+        if( this != &other){
+            del();
+            copy(other);
+        }
+
+        return  *this;
+    }
+
 
     int get_remaining_time() const {
         return this->remaining_time;
@@ -103,9 +99,105 @@ public:
         cout<<this->remaining_time;
     }
 };
+
+class Prison {
+private:
+    char* prison_name;
+    Prisoner *prisonerArr;
+    size_t capacity;
+    size_t size;
+    void copy(const Prison &other){
+
+        prison_name = new char[strlen(other.prison_name)+1];
+        strcpy(prison_name,other.prison_name);
+
+    }
+    void del()
+    {
+        delete[] prison_name;
+    }
+    void resize() {
+        capacity *=2;
+        Prisoner *temp = new Prisoner[capacity]; // масив от обекти - извиква се дефаутния конст
+        for (int i = 0; i < size; ++i) {
+
+            temp[i] = this->prisonerArr[i]; // изиква се оператор равно
+
+        }
+
+        delete[] prisonerArr;
+        prisonerArr = temp; //изиква се оператор равно
+        // тъй като е пойнтер и е дефиниран в блока на функ. ще се изтрие сам след като завърши функ.
+    }
+
+
+public:
+
+    Prison()
+    {
+        prison_name = "";
+        capacity = 0;
+        size = 0;
+    }
+
+    Prison(const char* _prison_name, size_t _capacity, size_t _size){
+
+        _prison_name = new char[strlen(prison_name)+1];
+        strcpy(_prison_name,prison_name);
+    }
+    Prison(const Prison  &other ) {
+
+        copy(other);
+    }
+    Prison& operator=(const Prison &other)){
+        if (this != &other) {
+            del();
+            copy(other);
+        }
+        return *this;
+    }
+    ~Prisoner() {
+
+        del();
+    }
+
+    void insert_prisoner(const Prisoner _prisonerArr) {
+
+        if(size == capacity-1)
+        {
+            resize();
+        }
+        prisonerArr[size] = _prisonerArr;
+        size++;
+
+    }
+    void sort_array() {
+
+        for (int i = 0; i <size-1 ; ++i) {
+            size_t min_index = i;
+            for (int j = i+1; j <size ; ++j) {
+                if (this->prisonerArr[min_index] > this->prisonerArr[j])
+                {
+                    min_index = j;
+                }
+            }
+
+            Prisoner temp = prisonerArr[min_index];
+            prisonerArr[min_index] = prisonerArr[i];
+            prisonerArr[i] = temp;
+        }
+
+
+   }
+
+    void get_prison_info() const {
+        cout<< this->name;
+       ?? cout<< this->prisonerArr; ????
+    }
+};
 int main() {
 
     Prisoner p1;
-    p1.get_remaining_time();
+   cout<< p1.get_remaining_time();
     return 0;
 }
