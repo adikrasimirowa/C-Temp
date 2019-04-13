@@ -56,8 +56,11 @@ public:
         this->remaining_time = _remaining_time;
 
 
+    }
 
+    bool operator > (const Prisoner &other) {
 
+        return this->remaining_time > other.remaining_time;
     }
 
     Prisoner(const Prisoner &other) // заделяме само памет за char и обекти
@@ -140,7 +143,7 @@ public:
         size = 0;
     }
 
-    Prison(const char* _prison_name, size_t _capacity, size_t _size){
+    Prison(char* _prison_name, size_t _capacity, size_t _size){
 
         _prison_name = new char[strlen(prison_name)+1];
         strcpy(_prison_name,prison_name);
@@ -149,21 +152,22 @@ public:
 
         copy(other);
     }
-    Prison& operator=(const Prison &other)){
+
+    Prison& operator=(const Prison &other) {
         if (this != &other) {
             del();
             copy(other);
         }
         return *this;
     }
-    ~Prisoner() {
+    ~Prison() {
 
         del();
     }
 
     void insert_prisoner(const Prisoner _prisonerArr) {
 
-        if(size == capacity-1)
+        if(size == capacity)
         {
             resize();
         }
@@ -191,8 +195,11 @@ public:
    }
 
     void get_prison_info() const {
-        cout<< this->name;
-       ?? cout<< this->prisonerArr; ????
+        cout<< this->prison_name;
+        for (int i = 0; i < size ; ++i) {
+            prisonerArr[i].print();
+        }
+
     }
 };
 int main() {
